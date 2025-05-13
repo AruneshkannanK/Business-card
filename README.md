@@ -47,4 +47,4 @@ This is a prototype application. In a production environment, you would need:
 1. A server component for storing and retrieving contact data
 2. More robust AR detection capabilities
 3. Additional security measures for user data
-4. Proper authentication system for user accounts 
+4. Proper authentication system for user accounts "# crypto-tracker" 
