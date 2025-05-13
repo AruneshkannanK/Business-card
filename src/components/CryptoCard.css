@@ -1,0 +1,85 @@
+.crypto-card {
+  background-color: #1a1a2e;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease;
+  border: 1px solid #2d2d42;
+}
+
+.crypto-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border-color: #4a4a82;
+}
+
+.crypto-card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.crypto-info {
+  display: flex;
+  align-items: center;
+}
+
+.crypto-image {
+  width: 40px;
+  height: 40px;
+  margin-right: 15px;
+}
+
+.crypto-name h3 {
+  margin: 0 0 5px 0;
+  font-size: 18px;
+  color: #fff;
+}
+
+.crypto-symbol {
+  color: #8a8aa3;
+  font-size: 14px;
+}
+
+.crypto-data {
+  text-align: right;
+}
+
+.crypto-price {
+  margin: 0 0 5px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.price-change {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.positive {
+  color: #00b8a9;
+}
+
+.negative {
+  color: #f8485e;
+}
+
+.view-details {
+  display: block;
+  text-align: center;
+  background-color: #4361ee;
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.view-details:hover {
+  background-color: #3a56d4;
+} 
