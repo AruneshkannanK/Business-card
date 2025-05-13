@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Business Card Viewer</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Onboarding Section -->
+        <section id="onboarding" class="active-section">
+            <div class="intro-container">
+                <h1>AR Business Card Viewer</h1>
+                <p>Scan business cards to view contact details and connect digitally</p>
+                <div class="features">
+                    <div class="feature">
+                        <div class="feature-icon">📇</div>
+                        <h3>Scan Cards</h3>
+                        <p>Point your camera at any business card</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">👤</div>
+                        <h3>View Details</h3>
+                        <p>See digital profile with extended information</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">💾</div>
+                        <h3>Save Contacts</h3>
+                        <p>Add to your digital rolodex with one tap</p>
+                    </div>
+                </div>
+                <button id="start-scanner" class="primary-btn">Start Scanning</button>
+            </div>
+        </section>
+
+        <!-- Scanner Section -->
+        <section id="scanner" class="section">
+            <div class="ar-container">
+                <a-scene embedded arjs="debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;">
+                    <a-marker type="pattern" url="patterns/business-card-marker.patt">
+                        <a-entity id="card-details" position="0 0.5 0"></a-entity>
+                    </a-marker>
+                    <a-entity camera></a-entity>
+                </a-scene>
+                <div class="scanner-ui">
+                    <div class="scan-overlay">
+                        <div class="scan-area"></div>
+                        <p>Position the business card within the frame</p>
+                    </div>
+                    <div class="toolbar">
+                        <button id="toggle-flash" class="tool-btn">💡</button>
+                        <button id="exit-scanner" class="tool-btn">✖️</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile View Section -->
+        <section id="profile-view" class="section">
+            <div class="profile-container">
+                <div class="profile-header">
+                    <button id="back-to-scanner" class="back-btn">←</button>
+                    <h2>Contact Details</h2>
+                    <button id="save-contact" class="save-btn">Save</button>
+                </div>
+                
+                <div class="profile-card">
+                    <div class="profile-photo">
+                        <img id="contact-photo" src="placeholder-avatar.jpg" alt="Contact Photo">
+                    </div>
+                    <div class="profile-info">
+                        <h3 id="contact-name">John Doe</h3>
+                        <p id="contact-title">Product Designer</p>
+                        <p id="contact-company">TechCorp Inc.</p>
+                    </div>
+                </div>
+                
+                <div class="contact-details">
+                    <div class="detail-item">
+                        <div class="detail-icon">📱</div>
+                        <div class="detail-content">
+                            <p class="detail-label">Phone</p>
+                            <p id="contact-phone" class="detail-value">+1 (555) 123-4567</p>
+                        </div>
+                        <button class="action-btn" data-action="call">Call</button>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-icon">✉️</div>
+                        <div class="detail-content">
+                            <p class="detail-label">Email</p>
+                            <p id="contact-email" class="detail-value">john.doe@techcorp.com</p>
+                        </div>
+                        <button class="action-btn" data-action="email">Email</button>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-icon">🌐</div>
+                        <div class="detail-content">
+                            <p class="detail-label">Website</p>
+                            <p id="contact-website" class="detail-value">www.johndoe.com</p>
+                        </div>
+                        <button class="action-btn" data-action="visit">Visit</button>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-icon">📍</div>
+                        <div class="detail-content">
+                            <p class="detail-label">Address</p>
+                            <p id="contact-address" class="detail-value">123 Tech Street, San Francisco, CA 94107</p>
+                        </div>
+                        <button class="action-btn" data-action="map">Map</button>
+                    </div>
+                </div>
+                
+                <div class="social-links">
+                    <button class="social-btn" data-platform="linkedin">LinkedIn</button>
+                    <button class="social-btn" data-platform="twitter">Twitter</button>
+                    <button class="social-btn" data-platform="github">GitHub</button>
+                </div>
+                
+                <div class="additional-options">
+                    <button id="share-contact" class="secondary-btn">Share Contact</button>
+                    <button id="add-notes" class="secondary-btn">Add Notes</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Saved Contacts Section -->
+        <section id="saved-contacts" class="section">
+            <div class="contacts-container">
+                <div class="contacts-header">
+                    <h2>Saved Contacts</h2>
+                    <div class="search-container">
+                        <input type="text" id="search-contacts" placeholder="Search contacts...">
+                    </div>
+                </div>
+                
+                <div class="contacts-list" id="contacts-list">
+                    <!-- Contact items will be generated dynamically by JavaScript -->
+                </div>
+                
+                <div class="bottom-navigation">
+                    <button id="nav-scan" class="nav-btn active">
+                        <span class="nav-icon">🔍</span>
+                        <span class="nav-label">Scan</span>
+                    </button>
+                    <button id="nav-contacts" class="nav-btn">
+                        <span class="nav-icon">👥</span>
+                        <span class="nav-label">Contacts</span>
+                    </button>
+                    <button id="nav-settings" class="nav-btn">
+                        <span class="nav-icon">⚙️</span>
+                        <span class="nav-label">Settings</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings" class="section">
+            <div class="settings-container">
+                <div class="settings-header">
+                    <h2>Settings</h2>
+                </div>
+                
+                <div class="settings-list">
+                    <div class="settings-group">
+                        <h3>General</h3>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <p class="setting-name">Dark Mode</p>
+                                <p class="setting-description">Enable dark theme for the app</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="dark-mode-toggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <p class="setting-name">Notifications</p>
+                                <p class="setting-description">Enable notifications for new connections</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="notifications-toggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-group">
+                        <h3>Scanner</h3>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <p class="setting-name">Auto-save Contacts</p>
+                                <p class="setting-description">Automatically save scanned business cards</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="auto-save-toggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <p class="setting-name">Vibration</p>
+                                <p class="setting-description">Vibrate when business card is detected</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="vibration-toggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-group">
+                        <h3>Account</h3>
+                        <div class="setting-item clickable" id="account-settings">
+                            <div class="setting-info">
+                                <p class="setting-name">Account Settings</p>
+                                <p class="setting-description">Manage your account details</p>
+                            </div>
+                            <div class="setting-arrow">❯</div>
+                        </div>
+                        <div class="setting-item clickable" id="export-contacts">
+                            <div class="setting-info">
+                                <p class="setting-name">Export Contacts</p>
+                                <p class="setting-description">Export all contacts as CSV</p>
+                            </div>
+                            <div class="setting-arrow">❯</div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-group">
+                        <h3>About</h3>
+                        <div class="setting-item clickable" id="privacy-policy">
+                            <div class="setting-info">
+                                <p class="setting-name">Privacy Policy</p>
+                            </div>
+                            <div class="setting-arrow">❯</div>
+                        </div>
+                        <div class="setting-item clickable" id="terms-of-service">
+                            <div class="setting-info">
+                                <p class="setting-name">Terms of Service</p>
+                            </div>
+                            <div class="setting-arrow">❯</div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <p class="setting-name">Version</p>
+                                <p class="setting-description">1.0.0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bottom-navigation">
+                    <button id="nav-scan-from-settings" class="nav-btn">
+                        <span class="nav-icon">🔍</span>
+                        <span class="nav-label">Scan</span>
+                    </button>
+                    <button id="nav-contacts-from-settings" class="nav-btn">
+                        <span class="nav-icon">👥</span>
+                        <span class="nav-label">Contacts</span>
+                    </button>
+                    <button id="nav-settings-from-settings" class="nav-btn active">
+                        <span class="nav-icon">⚙️</span>
+                        <span class="nav-label">Settings</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="toast">
+            <div class="toast-content">
+                <div id="toast-icon" class="toast-icon">✓</div>
+                <div id="toast-message" class="toast-message">Contact saved successfully!</div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html> 
